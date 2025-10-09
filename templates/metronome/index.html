@@ -1,12 +1,16 @@
-<!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <title>Metronome</title>
-    <link rel="stylesheet" href="{% static 'css/metrosite.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    <div class="theme-switcher">
+        <button id="theme-toggle">🌙 Тёмная тема</button>
+    </div>
+
     <div class="metronome-container">
         <h1>Метроном</h1>
 
@@ -14,19 +18,16 @@
         <form method="post">
             {% csrf_token %}
 
-            <!-- ритмический размер -->
             <div class="setting-group">
                 <label>Размер такта:</label>
                 {{ form.beats_per_measure }} / {{ form.beat_unit }}
             </div>
 
-            <!-- Громкость -->
             <div class="setting-group">
-                <label>Громкость</label>
-                {{  form.volume }}%
+                <label>Громкость:</label>
+                {{ form.volume }}%
             </div>
 
-            <!-- BPM -->
             <div class="setting-group">
                 <label>BPM:</label>
                 {{ form.bpm }}
@@ -40,7 +41,8 @@
             <div class="bpm-display">BPM: <span id="current-bpm">{{ settings.bpm }}</span></div>
             <button id="play-button">Запуск</button>
             <button id="stop-button">Стоп</button>
-        <!-- Визуализация долей -->
+            
+            <!-- Визуализация долей -->
             <div class="beats-visualization">
                 {% for beat in beats %}
                 <div class="beat-indicator" id="beat-{{ forloop.counter }}"></div>
@@ -49,123 +51,42 @@
         </div>
     </div>
 
+    <!-- Подключение JavaScript файлов -->
+    <script src="{% static 'js/metronome.js' %}"></script>
+    <script src="{% static 'js/theme.js' %}"></script>
+    
+    <!-- Инициализация -->
     <script>
-        class Metronome {
-            constructor() {
-                console.log('Конструктор Metronome вызван');
-                this.isPlaying = false;
-                this.audioContext = null;
-                this.currentNote = 0;
-                this.beatsPerMeasure = {{ settings.beats_per_measure }};
-                this.bpm = {{ settings.bpm }};
-                this.intervalId = null;
-            }
+        // Настройки из Django
+        const metronomeSettings = {
+            beatsPerMeasure: {{ settings.beats_per_measure }},
+            bpm: {{ settings.bpm }},
+            volume: {{ settings.volume }}
+        };
 
-            // Инициализация аудио
-            initAudio() {
-                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-
-            // Воспроизведение звука
-            playSound(volume = 0.5) {
-                if (!this.audioContext) this.initAudio();
-
-                const oscillator = this.audioContext.createOscillator();
-                const gainNode = this.audioContext.createGain();
-
-                oscillator.connect(gainNode);
-                gainNode.connect(this.audioContext.destination);
-
-                // Сильная доля - другой звук
-                oscillator.frequency.setValueAtTime(this.currentNote === 0 ? 800 : 400, this.audioContext.currentTime);
-                oscillator.type = 'sine';
-
-                gainNode.gain.setValueAtTime(volume * {{ settings.volume }} / 100, this.audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.1);
-
-                oscillator.start();
-                oscillator.stop(this.audioContext.currentTime + 0.1);
-            }
-
-            // Основной цикл метронома
-            start() {
-                if (this.isPlaying) return;
-
-                console.log('Запуск метронома', this.bpm, 'BPM');
-                this.isPlaying = true;
-                const interval = 60000 / this.bpm;  // BPM в миллисекунды
-
-                this.intervalId = setInterval(() => {
-                    this.playSound(this.currentNote === 0 ? 0.7 : 0.5);
-                    this.updateVisualization();
-                    this.currentNote = (this.currentNote + 1) % this.beatsPerMeasure;
-                }, interval);
-            }
-
-            stop() {
-                this.isPlaying = false;
-                clearInterval(this.intervalId);
-                this.currentNote = 0;
-                this.resetVisualization();
-            }
-
-            // Обновление визуализации
-            updateVisualization() {
-                const indicators = document.querySelectorAll('.beat-indicator');
-                indicators.forEach((indicator, index) =>  {
-                    indicator.style.background = index === this.currentNote ? '#ff4444' : '#4444ff';
-                });
-            }
-
-            resetVisualization() {
-                const indicators = document.querySelectorAll('.beat-indicator');
-                indicators.forEach(indicator => {
-                    indicator.style.background = '#ccc';
-                });
-            }
-
-            // Обновление BPM
-            updateBpm(newBpm) {
-                this.bpm = newBpm;
-                if (this.isPlaying) {
-                    this.stop();
-                    this.start();
-                }
-            }
-        }
-
-        // Инициализация метронома
+        // Инициализация при загрузке страницы
         document.addEventListener('DOMContentLoaded', function() {
-            const metronome = new Metronome();
-            let audioInitialized = false;
-
-            function initAudioOnFirstClick() {
-                if (!audioInitialized) {
-                    metronome.initAudio();
-                    audioInitialized = true;
-                }
-            }
-
-            // Обработчик кнопок
+            // Метроном
+            const metronome = new Metronome(metronomeSettings);
+            
             document.getElementById('play-button').addEventListener('click', () => {
-                console.log('✅ Кнопка Запуск нажата!');
-                initAudioOnFirstClick();
                 metronome.start();
             });
 
             document.getElementById('stop-button').addEventListener('click', () => {
-                console.log('✅ Кнопка Стоп нажата!');
                 metronome.stop();
             });
 
-            // Обновление BPM в реальном времени
             const bpmField = document.querySelector('[name="bpm"]') || document.getElementById('id_bpm');
-                if (bpmField) {
-                    bpmField.addEventListener('input', function () {
-                        metronome.updateBpm(parseInt(this.value));
-                        document.getElementById('current-bpm').textContent = this.value;
-                    });
-                }
+            if (bpmField) {
+                bpmField.addEventListener('input', function() {
+                    metronome.updateBpm(parseInt(this.value));
+                    document.getElementById('current-bpm').textContent = this.value;
+                });
+            }
+
+            // Тема
+            new ThemeSwitcher();
         });
     </script>
 </body>
