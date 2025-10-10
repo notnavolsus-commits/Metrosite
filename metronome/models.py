@@ -4,10 +4,10 @@ from django.db import models
 
 class UserSettings(models.Model):
     BEAT_UNIT_CHOICES = [
-        (2, '1/2'),
-        (4, '1/4'),
-        (8, '1/8'),
-        (16, '1/16'),
+        (2, '2'),
+        (4, '4'),
+        (8, '8'),
+        (16, '16'),
     ]
     beats_per_measure = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(16)])
     beat_unit = models.PositiveIntegerField(choices=BEAT_UNIT_CHOICES)

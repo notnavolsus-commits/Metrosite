@@ -1,0 +1,83 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --accent-color: #4a4ae6;
+    --button-bg: #4a4ae6;
+    --button-text: #ffffff;
+    --border-color: #dddddd;
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --accent-color: #667eea;
+    --button-bg: #667eea;
+    --button-text: #ffffff;
+    --border-color: #444444;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    transition: all 0.3s ease;
+    margin: 0;
+    padding: 20px;
+}
+
+.metronome-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-color);
+}
+
+.setting-group {
+    margin: 15px 0;
+}
+
+.setting-group label {
+    display: inline-block;
+    width: 150px;
+}
+
+button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--border-color);
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.beats-visualization {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    justify-content: center;
+}
+
+.beat-indicator {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ccc;
+    transition: background 0.1s;
+}
+
+.theme-switcher {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+* {
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
