@@ -40,6 +40,8 @@
         <div class="metronome-display">
             <div class="bpm-display">BPM: <span id="current-bpm">{{ settings.bpm }}</span></div>
 
+            <!-- Описание темпа будет вставлено здесь автоматически -->
+
             <!-- Основные кнопки -->
             <button id="play-button">Запуск</button>
             <button id="stop-button">Стоп</button>
@@ -61,6 +63,7 @@
     <script src="{% static 'js/metronome.js' %}"></script>
     <script src="{% static 'js/theme.js' %}"></script>
     <script src="{% static 'js/tap_tempo.js' %}"></script>
+    <script src="{% static 'js/tempo_descriptions.js' %}"></script>
 
     <!-- Инициализация -->
     <script>
@@ -78,6 +81,10 @@
 
             // Инициализация тап-темпа
             const tapTempo = new TapTempo(metronome);
+
+            // Инициализация описания темпов
+            const tempoDescriptions = new TempoDescription();
+
             
             document.getElementById('play-button').addEventListener('click', () => {
                 metronome.start();
@@ -91,8 +98,13 @@
             const bpmField = document.querySelector('[name="bpm"]') || document.getElementById('id_bpm');
             if (bpmField) {
                 bpmField.addEventListener('input', function() {
-                    metronome.updateBpm(parseInt(this.value));
+                    const newBpm = parseInt(this.value);
+                    metronome.updateBpm(newBpm);
                     document.getElementById('current-bpm').textContent = this.value;
+
+                    // Отправляем событие об изменении BPM
+                    const event = new CustomEvent('bpmChanged', { detail: { bpm: newBpm } });
+                    document.dispatchEvent(event);
                 });
             }
 

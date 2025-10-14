@@ -97,6 +97,10 @@ class TapTempo {
         if (currentBpmDisplay) {
             currentBpmDisplay.textContent = newBPM;
         }
+
+        // Отправляем событие об изменении BPM
+        const event = new CustomEvent('bpm-changed', { detail : { bpm: newBPM } });
+        document.dispatchEvent(event);
     }
 
     updateFeedback() {

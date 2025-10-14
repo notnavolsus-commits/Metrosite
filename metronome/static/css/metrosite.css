@@ -120,6 +120,98 @@ button:hover {
     color: #ccc;
 }
 
+/* Стили для описания темпов */
+.tempo-description {
+    margin: 15px 0;
+}
+
+.tempo-info {
+    background: var(--bg-color);
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    transition: 0.3s all ease;
+}
+
+.tempo-info.in-range {
+    border-color: #4CAF50;
+    background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
+}
+
+.tempo-info.out-of-range {
+    border-color: #ff9800;
+    background: linear-gradient(135deg, #fff8f8 0%, #ffe8e8 100%);
+}
+
+[datatheme="dark"] .tempo-info.in-range {
+    background: linear-gradient(135deg, #1a2a1a 0%, #2a3a2a 100%);
+    border-color: #4CAF50;
+}
+
+[datatheme="dark"] .tempo-info.out-of-range {
+    background: linear-gradient(135deg, #1a2a1a 0%, #3a2a2a 100%);
+    border-color: #ff9800;
+}
+
+.tempo-name {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #424233;
+    display: block;
+    margin-bottom: 5px;
+}
+
+[data-theme="dark"] .tempo-name {
+    color: #4a4ae6;
+}
+
+.tempo-range {
+    font-size: 1.1em;
+    color: #666;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+}
+
+[datatheme="dark"] .tempo-range {
+    color: #aaa;
+}
+
+.tempo-description-text {
+    font-size: 0.9em;
+    color: #555;
+    line-height: 1.4;
+    margin-top: 8px;
+}
+
+[datatheme="dark"] .tempo-description-text {
+    color: #bbb;
+}
+
+.tempo-warning {
+    font-size: 0.8em;
+    color: #ff6b6b;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+/* Анимация появления */
+@keyframes tempoSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tempo-info {
+    animation: tempoSlideIn 0.3s ease;
+}
+
 * {
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
