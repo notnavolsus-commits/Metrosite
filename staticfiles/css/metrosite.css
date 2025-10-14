@@ -78,6 +78,48 @@ button:hover {
     margin-bottom: 20px;
 }
 
+/* Стили для тап-темпа */
+.tap-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.tap-button:active {
+    transform: scale(0.95);
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+}
+
+.tap-button.tapping {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    animation: pulse 0.5s ease;
+}
+
+.tap-feedback {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #666;
+    min-height: 20px;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+/* Темная тема для тап-кнопки */
+[data-theme="dark"] .tap-feedback {
+    color: #ccc;
+}
+
 * {
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }

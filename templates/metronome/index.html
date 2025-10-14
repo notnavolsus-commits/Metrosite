@@ -39,9 +39,15 @@
         <!-- Область метронома -->
         <div class="metronome-display">
             <div class="bpm-display">BPM: <span id="current-bpm">{{ settings.bpm }}</span></div>
+
+            <!-- Основные кнопки -->
             <button id="play-button">Запуск</button>
             <button id="stop-button">Стоп</button>
-            
+
+            <!-- Кнопка тап-темпа-->
+            <button id="tap-tempo" class="tap-button">Тап-темп</button>
+            <div id="tap-feedback" class="tap-feedback"></div>
+
             <!-- Визуализация долей -->
             <div class="beats-visualization">
                 {% for beat in beats %}
@@ -54,7 +60,8 @@
     <!-- Подключение JavaScript файлов -->
     <script src="{% static 'js/metronome.js' %}"></script>
     <script src="{% static 'js/theme.js' %}"></script>
-    
+    <script src="{% static 'js/tap_tempo.js' %}"></script>
+
     <!-- Инициализация -->
     <script>
         // Настройки из Django
@@ -68,6 +75,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Метроном
             const metronome = new Metronome(metronomeSettings);
+
+            // Инициализация тап-темпа
+            const tapTempo = new TapTempo(metronome);
             
             document.getElementById('play-button').addEventListener('click', () => {
                 metronome.start();
@@ -75,6 +85,7 @@
 
             document.getElementById('stop-button').addEventListener('click', () => {
                 metronome.stop();
+                tapTempo.reset(); // Сброс тапов при остановке метронома
             });
 
             const bpmField = document.querySelector('[name="bpm"]') || document.getElementById('id_bpm');
