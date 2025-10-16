@@ -72,5 +72,9 @@ class Metronome {
             this.stop();
             this.start();
         }
+
+        // Отправляем событие об изменении BPM
+        const event = new CustomEvent('bpmChanged', { detail: { bpm: newBpm } });
+        document.dispatchEvent(event);
     }
 }

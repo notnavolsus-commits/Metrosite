@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import UserSettings
+from django.http import JsonResponse
+from .models import UserSettings, TempoPreset
 from .forms import UserSettingsForm
-
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 def metronome_view(request):
     #Получить или создать настройки
@@ -47,3 +50,7 @@ def metronome_view(request):
         # дополнительные данные для шаблона
     }
     return render(request, 'metronome/index.html', context)
+
+def api_presets(request):
+    presets = TempoPreset.objects.all().values('id', 'name', 'bpm', 'category', 'description')
+    return JsonResponse(list(presets), safe=False)

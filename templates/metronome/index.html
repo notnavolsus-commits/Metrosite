@@ -36,6 +36,38 @@
             <button type="submit" name="save_settings">Сохранить настройки</button>
         </form>
 
+        <!-- Пресеты темпов -->
+        <div class="presets-section">
+            <h3>🎵 Пресеты темпов</h3>
+
+            <div class="compact-presets">
+                <select id="presets-dropdown" class="presets-dropdown">
+                    <option value="">Выберите пресет</option>
+                    <optgroup label="Классика">
+                        <option value="60">Largo (60 BPM)</option>
+                        <option value="72">Adagio (72 BPM)</option>
+                        <option value="88">Andante (88 BPM)</option>
+                        <option value="112">Moderato (112 BPM)</option>
+                        <option value="140">Allegro (140 BPM)</option>
+                        <option value="180">Presto (180 BPM)</option>
+                    </optgroup>
+                    <optgroup label="Рок и поп">
+                        <option value="70">Rock Ballad (70 BPM)</option>
+                        <option value="120">Rock Standard (120 BPM)</option>
+                        <option value="85">Hip-Hop (85 BPM)</option>
+                        <option value="128">Dance (128 BPM)</option>
+                    </optgroup>
+                    <optgroup label="Джаз">
+                        <option value="90">Slow Jazz (90 BPM)</option>
+                        <option value="130">Medium Jazz (130 BPM)</option>
+                        <option value="180">Upbeat Jazz (180 BPM)</option>
+                    </optgroup>
+                </select>
+
+                <button id="apply-preset" class="apply-preset-btn">Применить</button>
+            </div>
+        </div>
+
         <!-- Область метронома -->
         <div class="metronome-display">
             <div class="bpm-display">BPM: <span id="current-bpm">{{ settings.bpm }}</span></div>
@@ -63,7 +95,9 @@
     <script src="{% static 'js/metronome.js' %}"></script>
     <script src="{% static 'js/theme.js' %}"></script>
     <script src="{% static 'js/tap_tempo.js' %}"></script>
+    <script src="{% static 'js/presets.js' %}"></script>
     <script src="{% static 'js/tempo_descriptions.js' %}"></script>
+
 
     <!-- Инициализация -->
     <script>
@@ -81,6 +115,9 @@
 
             // Инициализация тап-темпа
             const tapTempo = new TapTempo(metronome);
+
+            // Инициализация пресетов
+            const tempoPresets = new TempoPresets(metronome);
 
             // Инициализация описания темпов
             const tempoDescriptions = new TempoDescription();

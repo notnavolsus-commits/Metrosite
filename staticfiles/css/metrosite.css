@@ -9,7 +9,7 @@
 
 [data-theme="dark"] {
     --bg-color: #1a1a1a;
-    --text-color: #f1f0f0;
+    --text-color: #ffffff;
     --accent-color: #667eea;
     --button-bg: #667eea;
     --button-text: #ffffff;
@@ -98,7 +98,7 @@ button:hover {
 }
 
 .tap-button.tapping {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    background: linear-gradient(135deg, #ff6d6b 0%, #ee5a24 100%);
     animation: pulse 0.5s ease;
 }
 
@@ -118,6 +118,241 @@ button:hover {
 /* Темная тема для тап-кнопки */
 [data-theme="dark"] .tap-feedback {
     color: #ccc;
+}
+
+/* Стили для пресетов */
+.presets-section {
+    margin: 30px 0;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--bg-color);
+}
+
+.presets-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.presets-category-btn {
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+.preset-category-btn.active,
+.preset-category-btn:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.presets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.preset-card {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.preset-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-color: var(--accent-color);
+}
+
+.preset-card.active {
+    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: white;
+}
+
+.preset-name {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.preset-bpm {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--accent-color);
+    margin: 10px 0;
+}
+
+.preset-card.active .preset.bpm {
+    color: white;
+}
+
+.preset-description {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.preset-card.active .preset-description {
+    color: rgba(255,255,255,0.8);
+}
+
+/* Тёмная темя для пресетов */
+[data-theme="dark"] .preset-description {
+    color: #aaa;
+}
+
+[data-theme="dark"] .preset-card {
+    background: #2a2a2a;
+}
+
+/* Стили для компактных пресетов */
+.compact-presets {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+    align-items: center;
+}
+
+.presets-dropdown {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: 14px;
+}
+
+.apply-preset-btn {
+    padding: 8px 15px;
+    background: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.quick-tempo {
+    padding: 6px 10px;
+    background: var(--button-bg);
+    color: var(--button-bg);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+}
+
+.quick-tempo:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* Стили для описания темпов */
+.tempo-description {
+    margin: 15px 0;
+}
+
+.tempo-info {
+    background: var(--bg-color);
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    transition: 0.3s all ease;
+}
+
+.tempo-info.in-range {
+    border-color: #4CAF50;
+    background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
+}
+
+.tempo-info.out-of-range {
+    border-color: #ff9800;
+    background: linear-gradient(135deg, #fff8f8 0%, #ffe8e8 100%);
+}
+
+[datatheme="dark"] .tempo-info.in-range {
+    background: linear-gradient(135deg, #1a2a1a 0%, #2a3a2a 100%);
+    border-color: #4CAF50;
+}
+
+[datatheme="dark"] .tempo-info.out-of-range {
+    background: linear-gradient(135deg, #1a2a1a 0%, #3a2a2a 100%);
+    border-color: #ff9800;
+}
+
+.tempo-name {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #424233;
+    display: block;
+    margin-bottom: 5px;
+}
+
+[data-theme="dark"] .tempo-name {
+    color: #4a4ae6;
+}
+
+.tempo-range {
+    font-size: 1.1em;
+    color: #666;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+}
+
+[datatheme="dark"] .tempo-range {
+    color: #aaa;
+}
+
+.tempo-description-text {
+    font-size: 0.9em;
+    color: #555;
+    line-height: 1.4;
+    margin-top: 8px;
+}
+
+[datatheme="dark"] .tempo-description-text {
+    color: #bbb;
+}
+
+.tempo-warning {
+    font-size: 0.8em;
+    color: #ff6b6b;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+/* Анимация появления */
+@keyframes tempoSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tempo-info {
+    animation: tempoSlideIn 0.3s ease;
 }
 
 * {

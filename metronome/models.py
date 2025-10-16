@@ -23,3 +23,29 @@ class UserSettings(models.Model):
         validators=[MinValueValidator(30), MaxValueValidator(300)],
         help_text="Ударов в минуту (30-300 BPM)"
     )
+
+class TempoPreset(models.Model):
+    name = models.CharField(max_length=100, help_text="Название пресета")
+    bpm = models.PositiveIntegerField(
+        validators=[MinValueValidator(30), MaxValueValidator(300)],
+        help_text="Темп в BPM"
+    )
+    description = models.CharField(max_length=200, blank=True, help_text="Описание")
+    category = models.CharField(
+        max_length=20,
+        choices=[
+            ('classical', 'Классика'),
+            ('popular', 'Популярная музыка'),
+            ('rock', 'Рок'),
+            ('jazz', 'Джаз'),
+            ('electronic', 'Электронная'),
+            ('custom', 'Пользовательская')
+        ],
+    default='custom'
+    )
+
+    def __str__(self):
+        return f"{self.name} ({self.bpm} BPM)"
+
+    class Meta:
+        ordering = ['bpm']
