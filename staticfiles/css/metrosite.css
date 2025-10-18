@@ -136,7 +136,7 @@ button:hover {
     margin: 15px 0;
 }
 
-.presets-category-btn {
+.preset-category-btn {
     background: var(--button-bg);
     color: var(--button-text);
     border: 1px solid var(--border-color);
@@ -195,7 +195,7 @@ button:hover {
     margin: 10px 0;
 }
 
-.preset-card.active .preset.bpm {
+.preset-card.active .preset-bpm {
     color: white;
 }
 
@@ -209,7 +209,7 @@ button:hover {
     color: rgba(255,255,255,0.8);
 }
 
-/* Тёмная темя для пресетов */
+/* Тёмная тема для пресетов */
 [data-theme="dark"] .preset-description {
     color: #aaa;
 }
@@ -249,7 +249,7 @@ button:hover {
 .quick-tempo {
     padding: 6px 10px;
     background: var(--button-bg);
-    color: var(--button-bg);
+    color: var(--button-text);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -287,12 +287,12 @@ button:hover {
     background: linear-gradient(135deg, #fff8f8 0%, #ffe8e8 100%);
 }
 
-[datatheme="dark"] .tempo-info.in-range {
+[data-theme="dark"] .tempo-info.in-range {
     background: linear-gradient(135deg, #1a2a1a 0%, #2a3a2a 100%);
     border-color: #4CAF50;
 }
 
-[datatheme="dark"] .tempo-info.out-of-range {
+[data-theme="dark"] .tempo-info.out-of-range {
     background: linear-gradient(135deg, #1a2a1a 0%, #3a2a2a 100%);
     border-color: #ff9800;
 }
@@ -317,7 +317,7 @@ button:hover {
     margin-bottom: 8px;
 }
 
-[datatheme="dark"] .tempo-range {
+[data-theme="dark"] .tempo-range {
     color: #aaa;
 }
 
@@ -328,7 +328,7 @@ button:hover {
     margin-top: 8px;
 }
 
-[datatheme="dark"] .tempo-description-text {
+[data-theme="dark"] .tempo-description-text {
     color: #bbb;
 }
 
@@ -388,7 +388,7 @@ button:hover {
     background: linear-gradient(135deg, var(--bg-color) 0%, #fff8f8 100%);
 }
 
-[data_theme="dark"] .beat-sound-config.strong-beat {
+[data-theme="dark"] .beat-sound-config.strong-beat {
     background: linear-gradient(135deg, var(--bg-color) 0%, #2a1a1a 100%);
 }
 
@@ -426,7 +426,7 @@ button:hover {
     font-weight: bold;
 }
 
-.text-sound-btn {
+.test-sound-btn {
     padding: 6px 12px;
     background: var(--button-bg);
     color: var(--button-text);
@@ -436,7 +436,7 @@ button:hover {
     font-size: 12px;
 }
 
-.sound-presets {
+.sound-preset {
     margin-top: 20px;
     padding-top: 15px;
     border-top: 1px solid var(--border-color);

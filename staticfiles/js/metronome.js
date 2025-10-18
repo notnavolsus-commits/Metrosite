@@ -60,6 +60,8 @@ class Metronome {
 
     updateVisualization() {
         const indicators = document.querySelectorAll('.beat-indicator');
+        if (indicators.length === 0) return;
+
         indicators.forEach((indicator, index) => {
             indicator.style.background = index === this.currentNote ? '#ff4444' : '#4444ff';
         });
@@ -67,6 +69,8 @@ class Metronome {
 
     resetVisualization() {
         const indicators = document.querySelectorAll('.beat-indicator');
+        if (indicators.length === 0) return;
+
         indicators.forEach(indicator => {
             indicator.style.background = '#ccc';
         });

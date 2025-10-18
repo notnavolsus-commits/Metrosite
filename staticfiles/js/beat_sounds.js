@@ -42,20 +42,20 @@ class BeatSounds {
         const container = document.getElementById('sounds-configuration');
         if (!container) return;
 
-        const beatsCounts = this.metronome.beatsPerMeasure
+        const beatsCount = this.metronome.beatsPerMeasure;
 
         // Создаём конфигурацию для каждой доли
         container.innerHTML = '';
 
-        for (let i = 0; i < beatsCounts; i++) {
-            const isStrongBeats = i === 0;
+        for (let i = 0; i < beatsCount; i++) {
+            const isStrongBeat = i === 0;
             const config = this.soundConfigs.find(s => s.beatPosition === i) || { beatPosition: i, soundType: 'click', volume: 80 };
 
             const beatConfig = document.createElement('div');
-            beatConfig.className = `beat-sound-config ${isStrongBeats ? 'strong-beat' : ''}`;
+            beatConfig.className = `beat-sound-config ${isStrongBeat ? 'strong-beat' : ''}`;
             beatConfig.innerHTML = `
                 <div class="beat-position">Доля ${i + 1}</div>
-                <select class="sound-effect" data-beat="${i}">
+                <select class="sound-select" data-beat="${i}">
                     <option value="click" ${config.soundType === 'click' ? 'selected' : ''}>Клик</option>
                     <option value="beep" ${config.soundType === 'beep' ? 'selected' : ''}>Бип</option>
                     <option value="woodblock" ${config.soundType === 'woodblock' ? 'selected' : ''}>Вудблок</option>
@@ -67,7 +67,7 @@ class BeatSounds {
                 </select>
                 <input type="range" class="volume-slider" data-beat="${i}"
                     min="0" max="100" value="${config.volume}">
-                <span class="volume-value">${config.volume}</span>
+                <span class="volume-value">${config.volume}%</span>
                 <button class="test-sound-btn" data-beat="${i}">▶</button> 
             `;
 
@@ -117,8 +117,8 @@ class BeatSounds {
         });
     }
 
-    updateSoundConfig() {
-        let config = this.soundConfig.find(s => s.beatPosition === beatPosition);
+    updateSoundConfig(beatPosition, property, value) {
+        let config = this.soundConfigs.find(s => s.beatPosition === beatPosition);
 
         if (!config) {
             config = { beatPosition, soundType: 'click', volume: 80};
@@ -137,7 +137,7 @@ class BeatSounds {
 
     playSound(soundType, volume = 0.7) {
         if (!this.audioContext) {
-            this.audioContext = new (window.AudioContext || window.webkitAudioContent)()
+            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
         }
 
         const oscillator = this.audioContext.createOscillator();

@@ -1,4 +1,4 @@
-class TempoDescription {
+class TempoDescriptions {
     constructor() {
         this.tempoRanges = [
             {
