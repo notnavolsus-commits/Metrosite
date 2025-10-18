@@ -14,22 +14,28 @@ class Metronome {
     }
 
     playSound(volume = 0.5) {
-        if (!this.audioContext) this.initAudio();
+        // делегируем BeatSounds
+        if (window.beatSounds) {
+            window.beatSounds.playBeatSound(this.currentNote);
+        } else {
+            //Резервный код
+            if (!this.audioContext) this.initAudio();
 
-        const oscillator = this.audioContext.createOscillator();
-        const gainNode = this.audioContext.createGain();
+            const oscillator = this.audioContext.createOscillator();
+            const gainNode = this.audioContext.createGain();
 
-        oscillator.connect(gainNode);
-        gainNode.connect(this.audioContext.destination);
+            oscillator.connect(gainNode);
+            gainNode.connect(this.audioContext.destination);
 
-        oscillator.frequency.setValueAtTime(this.currentNote === 0 ? 800 : 400, this.audioContext.currentTime);
-        oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(this.currentNote === 0 ? 800 : 400, this.audioContext.currentTime);
+            oscillator.type = 'sine';
 
-        gainNode.gain.setValueAtTime(volume * this.volume / 100, this.audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(volume * this.volume / 100, this.audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.1);
 
-        oscillator.start();
-        oscillator.stop(this.audioContext.currentTime + 0.1);
+            oscillator.start();
+            oscillator.stop(this.audioContext.currentTime + 0.1);
+        }
     }
 
     start() {
@@ -54,6 +60,8 @@ class Metronome {
 
     updateVisualization() {
         const indicators = document.querySelectorAll('.beat-indicator');
+        if (indicators.length === 0) return;
+
         indicators.forEach((indicator, index) => {
             indicator.style.background = index === this.currentNote ? '#ff4444' : '#4444ff';
         });
@@ -61,6 +69,8 @@ class Metronome {
 
     resetVisualization() {
         const indicators = document.querySelectorAll('.beat-indicator');
+        if (indicators.length === 0) return;
+
         indicators.forEach(indicator => {
             indicator.style.background = '#ccc';
         });

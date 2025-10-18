@@ -10,7 +10,6 @@ class TempoPresets {
     async init() {
         await this.loadPresets();
         this.setupEventListeners();
-        this.renderPresets();
     }
 
     async loadPresets() {
@@ -54,16 +53,16 @@ class TempoPresets {
 
     setupEventListeners() {
         // Обработчики категорий
-        document.querySelectorAll('.preset-category-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const category = e.target.dataset.category;
-                this.filterPresets(category);
+        // document.querySelectorAll('.preset-category-btn').forEach(btn => {
+        //    btn.addEventListener('click', (e) => {
+        //        const category = e.target.dataset.category;
+        //        this.filterPresets(category);
 
-                // Обновляем активную кнопку
-                document.querySelectorAll('.preset-category-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-            });
-        });
+        //        // Обновляем активную кнопку
+        //        document.querySelectorAll('.preset-category-btn').forEach(b => b.classList.remove('active'));
+        //        e.target.classList.add('active');
+        //    });
+        //});
         // Обработчик выпадающего списка
         const presetsDropdown = document.getElementById('presets-dropdown');
         const applyPresetBtn = document.getElementById('apply-preset');
@@ -93,38 +92,38 @@ class TempoPresets {
 
     }
 
-    filterPresets(category) {
-        const container = document.getElementById('presets-container');
-        const filteredPresets = category === 'all'
-            ? this.presets
-            : this.presets.filter(preset => preset.category === category);
-
-        this.renderPresets(filteredPresets);
-    }
-
-    renderPresets(presets = this.presets) {
-        const container = document.getElementById('presets-container');
-
-        container.innerHTML = presets.map(preset => `
-            <div class="preset-card ${this.currentPreset?.id === preset.id ? 'active' : ''}"
-                data-id="${preset.id}" data-bpm="${preset.bpm}">
-                <div class="preset-name">${preset.name}</div>
-                <div class="preset-bpm">${preset.bpm}</div>
-                <div class="preset-description">${preset.description}</div>
-            </div>
-        `).join('');
-
-        // Добавляем обработчики для карточек пресетов
-        container.querySelectorAll('.preset-card').forEach(card => {
-            card.addEventListener('click', (e) =>{
-                const presetId = parseInt(e.currentTarget.dataset.id);
-                const preset = this.presets.find(p => p.id === presetId);
-                if (preset) {
-                    this.applyPreset(preset);
-                }
-            });
-        });
-    }
+    // filterPresets(category) {
+    //     const container = document.getElementById('presets-container');
+    //     const filteredPresets = category === 'all'
+    //         ? this.presets
+    //         : this.presets.filter(preset => preset.category === category);
+    //
+    //     this.renderPresets(filteredPresets);
+    // }
+    //
+    // renderPresets(presets = this.presets) {
+    //     const container = document.getElementById('presets-container');
+    //
+    //     container.innerHTML = presets.map(preset => `
+    //         <div class="preset-card ${this.currentPreset?.id === preset.id ? 'active' : ''}"
+    //             data-id="${preset.id}" data-bpm="${preset.bpm}">
+    //             <div class="preset-name">${preset.name}</div>
+    //             <div class="preset-bpm">${preset.bpm}</div>
+    //             <div class="preset-description">${preset.description}</div>
+    //         </div>
+    //     `).join('');
+    //
+    //     // Добавляем обработчики для карточек пресетов
+    //     container.querySelectorAll('.preset-card').forEach(card => {
+    //         card.addEventListener('click', (e) =>{
+    //             const presetId = parseInt(e.currentTarget.dataset.id);
+    //             const preset = this.presets.find(p => p.id === presetId);
+    //             if (preset) {
+    //                 this.applyPreset(preset);
+    //             }
+    //         });
+    //     });
+    // }
 
     applyPreset(preset) {
         // Обновляем BPM в метрономе
@@ -143,11 +142,15 @@ class TempoPresets {
         }
 
         // Обновляем активный пресет
-        this.currentPreset = preset;
-        this.renderPresets(); // Перерисовываем для активного обновления
+        // this.currentPreset = preset;
+        // this.renderPresets(); // Перерисовываем для активного обновления
 
         // Показываем уведомление
         this.showNotification(`Установлен пресет: ${preset.name} (${preset.bpm} BPM)`);
+
+        // Отправляем событие для обновления описания темпа
+        const event = new CustomEvent('bpmChanged', { detail: { bpm: preset.bpm } });
+        document.dispatchEvent(event);
     }
 
     showNotification(message) {
