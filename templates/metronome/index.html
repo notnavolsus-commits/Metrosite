@@ -2,9 +2,17 @@
 <!DOCTYPE html>
 <html lang="ru" data-theme="light">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#007bff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta charset="UTF-8">
     <title>Metronome</title>
+
     <link rel="stylesheet" href="{% static 'css/metrosite.css' %}">
+    <link rel="apple-touch-icon" href="{% static 'admin/img/icon-no.svg' %}">
+    <link rel="icon" type="image/svg" href="{% static 'admin/img/icon-no.svg' %}">
 </head>
 <body>
     <div class="theme-switcher">
@@ -12,29 +20,36 @@
     </div>
 
     <div class="metronome-container">
-        <h1>Метроном</h1>
+        <div class="mobile-header">
+            <h1>Метроном</h1>
+        </div>
 
         <!-- Форма настроек -->
-        <form method="post">
-            {% csrf_token %}
+        <details class="mobile-settings">
+            <summary>Настройки</summary>
+            <div class="settings-content">
+                <form method="post">
+                    {% csrf_token %}
 
-            <div class="setting-group">
-                <label>Размер такта:</label>
-                {{ form.beats_per_measure }} / {{ form.beat_unit }}
+                    <div class="setting-group">
+                        <label>Размер такта:</label>
+                        {{ form.beats_per_measure }} / {{ form.beat_unit }}
+                    </div>
+
+                    <div class="setting-group">
+                        <label>Громкость:</label>
+                        {{ form.volume }}%
+                    </div>
+
+                    <div class="setting-group">
+                        <label>BPM:</label>
+                        {{ form.bpm }}
+                    </div>
+
+                    <button type="submit" name="save_settings">Сохранить настройки</button>
+                </form>
             </div>
-
-            <div class="setting-group">
-                <label>Громкость:</label>
-                {{ form.volume }}%
-            </div>
-
-            <div class="setting-group">
-                <label>BPM:</label>
-                {{ form.bpm }}
-            </div>
-
-            <button type="submit" name="save_settings">Сохранить настройки</button>
-        </form>
+        </details>
 
         <!-- Пресеты темпов -->
         <div class="presets-section">
@@ -70,16 +85,21 @@
 
         <!-- Область метронома -->
         <div class="metronome-display">
-            <div class="bpm-display">BPM: <span id="current-bpm">{{ settings.bpm }}</span></div>
+            <div class="bpm-display bpm-swipe-area">
+                <div class="bpm-label">BPM: <span id="current-bpm">{{ settings.bpm }}</span></div>
+                <div class="swipe-hint"> < свайп для изменения ></div>
+            </div>
 
             <!-- Описание темпа будет вставлено здесь автоматически -->
 
             <!-- Основные кнопки -->
-            <button id="play-button">Запуск</button>
-            <button id="stop-button">Стоп</button>
+            <div class="mobile-controls">
+                <button id="play-button">Запуск</button>
+                <button id="stop-button">Стоп</button>
 
-            <!-- Кнопка тап-темпа-->
-            <button id="tap-tempo" class="tap-button">Тап-темп</button>
+                <!-- Кнопка тап-темпа-->
+                <button id="tap-tempo" class="tap-button">Тап-темп</button>
+            </div>
             <div id="tap-feedback" class="tap-feedback"></div>
 
             <!-- Визуализация долей -->
@@ -91,24 +111,25 @@
         </div>
 
         <!-- Настройки звуков долей -->
-        <div class="sounds-section">
-            <h3>Настройки звуков долей</h3>
+        <details class="mobile-sounds">
+            <summary>Настройки звуков</summary>
+            <div class="sounds-content">
+                <div class="sounds-configuration" id="sounds-configuration">
+                    <!-- Конфигурация звуков будет генерироваться через JS -->
+                </div>
 
-            <div class="sounds-configuration" id="sounds-configuration">
-                <!-- Конфигурация звуков будет генерироваться через JS -->
-            </div>
-
-            <!-- Быстрые пресеты звуков -->
-            <div class="sound-presets">
-                <h4>Быстрые настройки</h4>
-                <div class="sound-preset-buttons">
-                    <button class="sound-preset" data-preset="classic">Классический</button>
-                    <button class="sound-preset" data-preset="electronic">Электронный</button>
-                    <button class="sound-preset" data-preset="orchestra">Оркестровый</button>
-                    <button class="sound-preset" data-preset="drums">Барабаны</button>
+                <!-- Быстрые пресеты звуков -->
+                <div class="sound-presets">
+                    <h4>Быстрые настройки</h4>
+                    <div class="sound-preset-buttons">
+                        <button class="sound-preset" data-preset="classic">Классический</button>
+                        <button class="sound-preset" data-preset="electronic">Электронный</button>
+                        <button class="sound-preset" data-preset="orchestra">Оркестровый</button>
+                        <button class="sound-preset" data-preset="drums">Барабаны</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </details>
     </div>
 
     <!-- Подключение JavaScript файлов -->
@@ -118,6 +139,7 @@
     <script src="{% static 'js/presets.js' %}"></script>
     <script src="{% static 'js/tempo_descriptions.js' %}"></script>
     <script src="{% static 'js/beat_sounds.js' %}"></script>
+    <script src="{% static 'js/mobile.js' %}"></script>
 
 
     <!-- Инициализация -->
@@ -145,6 +167,8 @@
 
             // Инициализация звуков для метронома
             const beatSounds = new BeatSounds(metronome);
+
+            //const mobileOptimizer = new MobileOptimizer(metronome);
 
             window.beatSounds = beatSounds;
 

@@ -1,5 +1,7 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import User
 from django.db.models import PositiveIntegerField
 
 
@@ -10,8 +12,9 @@ class UserSettings(models.Model):
         (8, '8'),
         (16, '16'),
     ]
-    beats_per_measure = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(16)])
-    beat_unit = models.PositiveIntegerField(choices=BEAT_UNIT_CHOICES)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    beats_per_measure = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(16)], default=4)
+    beat_unit = models.PositiveIntegerField(choices=BEAT_UNIT_CHOICES, default=4)
 
     volume = models.PositiveIntegerField(
         default=70,
@@ -24,6 +27,9 @@ class UserSettings(models.Model):
         validators=[MinValueValidator(30), MaxValueValidator(300)],
         help_text="Ударов в минуту (30-300 BPM)"
     )
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
 
 class TempoPreset(models.Model):
     name = models.CharField(max_length=100, help_text="Название пресета")
